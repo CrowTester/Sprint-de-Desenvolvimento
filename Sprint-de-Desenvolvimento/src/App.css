@@ -3,6 +3,40 @@
   height: 100%;
 }
 
+/* Global Animation */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Page Title */
 h1 {
   font-family: 'Bebas Neue', sans-serif;
@@ -12,6 +46,29 @@ h1 {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   text-shadow: 0 0 15px rgba(137, 233, 0, 0.15);
+  animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  position: relative;
+  display: inline-block;
+}
+
+h1::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green), transparent);
+  animation: expandWidth 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.4s forwards;
+}
+
+@keyframes expandWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
 }
 
 h2 {
@@ -20,6 +77,7 @@ h2 {
   color: var(--text);
   margin-bottom: 16px;
   letter-spacing: 0.05em;
+  animation: slideIn 0.5s ease-out 0.1s both;
 }
 
 h3 {
@@ -27,6 +85,7 @@ h3 {
   font-size: 18px;
   color: var(--green);
   margin-bottom: 12px;
+  animation: slideIn 0.5s ease-out 0.2s both;
 }
 
 /* Search/Filter Bar */
@@ -50,6 +109,7 @@ h3 {
 .items-container {
   display: grid;
   gap: 16px;
+  animation: slideDown 0.4s ease-out forwards;
 }
 
 .item-card {
@@ -58,18 +118,37 @@ h3 {
   border-left: 4px solid var(--green);
   padding: 20px;
   border-radius: 6px;
-  transition: all 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   gap: 16px;
+  animation: fadeInUp 0.5s ease-out calc(0.1s + var(--card-index, 0) * 0.05s) both;
+  position: relative;
+  overflow: hidden;
+}
+
+.item-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(137, 233, 0, 0.03);
+  transition: width 0.3s ease;
+  z-index: -1;
 }
 
 .item-card:hover {
   border-color: var(--green);
-  box-shadow: 0 8px 24px rgba(137, 233, 0, 0.1);
-  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(137, 233, 0, 0.15);
+  transform: translateY(-4px) scale(1.01);
   background: linear-gradient(135deg, var(--surface2) 0%, rgba(137, 233, 0, 0.02) 100%);
+}
+
+.item-card:hover::before {
+  width: 100%;
 }
 
 .item-content {

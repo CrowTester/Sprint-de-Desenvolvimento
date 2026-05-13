@@ -16,6 +16,7 @@
   height: 100vh;
   overflow: hidden;
   box-shadow: 2px 0 15px rgba(137, 233, 0, 0.1);
+  animation: fadeInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .sidebar-brand {
@@ -25,11 +26,13 @@
   padding: 32px 24px;
   border-bottom: 1px solid var(--border);
   background: rgba(137, 233, 0, 0.05);
+  animation: slideIn 0.6s ease-out 0.2s both;
 }
 
 .brand-icon {
   font-size: 32px;
   filter: grayscale(0) drop-shadow(0 0 8px rgba(137, 233, 0, 0.3));
+  animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.4s both;
 }
 
 .brand-name {
@@ -39,6 +42,7 @@
   color: var(--green);
   line-height: 1;
   text-shadow: 0 0 10px rgba(137, 233, 0, 0.2);
+  animation: glow 2s ease-in-out infinite 0.6s both;
 }
 
 .brand-tag {
@@ -47,6 +51,7 @@
   color: var(--text-muted);
   margin-top: 4px;
   letter-spacing: 0.05em;
+  animation: fadeInUp 0.5s ease-out 0.8s both;
 }
 
 .sidebar-nav {
@@ -55,6 +60,7 @@
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  animation: slideIn 0.6s ease-out 0.3s both;
 }
 
 .nav-section-label {
@@ -65,6 +71,7 @@
   color: var(--text-muted);
   padding: 0 24px 16px;
   font-weight: 700;
+  animation: fadeInUp 0.4s ease-out 0.5s both;
 }
 
 .nav-item {
@@ -78,41 +85,46 @@
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   border-left: 3px solid transparent;
   margin: 0 8px;
   border-radius: 0 6px 6px 0;
+  animation: slideIn 0.4s ease-out calc(0.6s + var(--item-index, 0) * 0.1s) both;
 }
 
 .nav-item:hover {
   color: var(--green);
   background: rgba(137, 233, 0, 0.08);
-  transform: translateX(4px);
+  transform: translateX(6px) scale(1.02);
+  box-shadow: inset -4px 0 12px rgba(137, 233, 0, 0.1);
 }
 
 .nav-item.active {
   color: var(--green);
   background: rgba(137, 233, 0, 0.12);
   border-left-color: var(--green);
-  box-shadow: inset -2px 0 8px rgba(137, 233, 0, 0.1);
+  box-shadow: inset -4px 0 12px rgba(137, 233, 0, 0.15);
   font-weight: 700;
+  transform: translateX(4px);
 }
 
 .nav-icon {
   font-size: 16px;
   opacity: 0.8;
-  transition: all 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) calc(0.8s + var(--item-index, 0) * 0.1s) both;
 }
 
 .nav-item:hover .nav-icon {
   opacity: 1;
-  transform: scale(1.1);
+  transform: scale(1.2) rotate(5deg);
 }
 
 .nav-item.active .nav-icon {
   opacity: 1;
   text-shadow: 0 0 8px rgba(137, 233, 0, 0.4);
+  transform: scale(1.1);
 }
 
 .sidebar-footer {
@@ -136,7 +148,7 @@
   height: 8px;
   border-radius: 50%;
   background: var(--green);
-  animation: pulse-green 2s infinite;
+  animation: pulse-green 2s ease-in-out infinite;
   flex-shrink: 0;
   box-shadow: 0 0 8px rgba(137, 233, 0, 0.6);
 }
@@ -146,12 +158,13 @@
   overflow-y: auto;
   min-width: 0;
   background: linear-gradient(135deg, var(--black) 0%, var(--surface) 100%);
+  animation: fadeIn 0.6s ease-out 0.1s both;
 }
 
 .content-inner {
   padding: 48px;
   max-width: 1200px;
-  animation: fadeInUp 0.4s ease;
+  animation: fadeInUp 0.6s ease-out 0.3s both;
   min-height: 100%;
 }
 
@@ -165,7 +178,7 @@
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  animation: fadeInUp 0.2s ease;
+  animation: fadeIn 0.3s ease-out both;
 }
 
 .modal {
@@ -176,7 +189,20 @@
   max-width: 500px;
   width: 90%;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(137, 233, 0, 0.15);
-  animation: fadeInUp 0.3s ease;
+  animation: bounceIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) both;
+  position: relative;
+  overflow: hidden;
+}
+
+.modal::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  animation: slideIn 0.6s ease-out forwards;
 }
 
 .modal h3, .modal-title {
@@ -186,12 +212,14 @@
   color: var(--green);
   margin-bottom: 20px;
   text-transform: uppercase;
+  animation: slideIn 0.4s ease-out 0.2s both;
 }
 
 .modal input, .modal select {
   margin-bottom: 14px;
   border-radius: 4px;
-  transition: all 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.4s ease-out calc(0.3s + 0.1s) both;
 }
 
 .modal button {

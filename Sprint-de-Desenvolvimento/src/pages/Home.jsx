@@ -93,6 +93,7 @@ export default function Home() {
               key={i}
               to={card.link}
               className="dashboard-card"
+              style={{ '--card-index': i }}
             >
               <h3>{card.label}</h3>
               <p>{card.value}</p>

@@ -283,8 +283,8 @@ export default function PedidosPage() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {pedidos.map((p) => (
-                                    <tr key={p.id}>
+                                {pedidos.map((p, index) => (
+                                    <tr key={p.id} style={{ '--row-index': index }}>
                                         <td style={{ fontFamily: 'Space Mono', fontSize: '12px', color: 'var(--text-muted)' }}>#{p.id}</td>
                                         <td style={{ fontWeight: 500 }}>{getNomeCliente(p.cliente_id)}</td>
                                         <td style={{ color: 'var(--text-muted)', maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>

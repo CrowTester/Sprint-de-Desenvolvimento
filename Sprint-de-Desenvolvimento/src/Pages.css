@@ -6,14 +6,26 @@
   margin-bottom: 24px;
   padding-bottom: 16px;
   border-bottom: 1px solid var(--border);
+  animation: slideDown 0.4s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .filter-pill {
   background: transparent;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   color: var(--text-muted);
-  padding: 8px 14px;
-  border-radius: 6px;
+  padding: 10px 16px;
+  border-radius: 20px;
   cursor: pointer;
   font-family: 'Space Mono', monospace;
   font-size: 12px;
@@ -22,27 +34,48 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  transition: all 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.filter-pill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(137, 233, 0, 0.05);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
 }
 
 .filter-pill:hover {
   border-color: var(--green);
   color: var(--green);
+  transform: translateY(-2px);
+}
+
+.filter-pill:hover::before {
+  transform: scaleX(1);
 }
 
 .filter-pill.active {
-  background: var(--green);
+  background: linear-gradient(135deg, var(--green) 0%, #a0ff00 100%);
   border-color: var(--green);
   color: var(--black);
   font-weight: 700;
+  box-shadow: 0 6px 20px rgba(137, 233, 0, 0.3);
+  transform: translateY(-2px);
 }
 
 .pill-count {
   background: rgba(255, 255, 255, 0.2);
-  padding: 2px 6px;
-  border-radius: 3px;
+  padding: 2px 8px;
+  border-radius: 10px;
   font-weight: 700;
   font-size: 10px;
+  transition: all 0.3s ease;
 }
 
 .filter-pill.active .pill-count {
@@ -52,6 +85,8 @@
 /* Table Styles */
 .table-wrapper {
   overflow-x: auto;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
 table {
@@ -62,6 +97,7 @@ table {
 
 thead tr {
   border-bottom: 2px solid var(--green);
+  background: rgba(137, 233, 0, 0.08);
 }
 
 th {
@@ -70,25 +106,34 @@ th {
   text-transform: uppercase;
   letter-spacing: 0.15em;
   color: var(--green);
-  padding: 14px 16px;
+  padding: 16px;
   text-align: left;
   font-weight: 700;
-  background: rgba(137, 233, 0, 0.05);
+  background: rgba(137, 233, 0, 0.08);
+  animation: slideIn 0.4s ease-out forwards;
 }
 
 td {
-  padding: 14px 16px;
-  border-bottom: 1px solid rgba(137, 233, 0, 0.08);
+  padding: 16px;
+  border-bottom: 1px solid rgba(137, 233, 0, 0.1);
   color: var(--text);
   vertical-align: middle;
+  transition: all 0.3s ease;
 }
 
 tbody tr {
-  transition: all 0.15s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.5s ease-out calc(0.05s + var(--row-index, 0) * 0.05s) both;
 }
 
 tbody tr:hover {
-  background: var(--green-glow);
+  background: linear-gradient(90deg, rgba(137, 233, 0, 0.08) 0%, rgba(137, 233, 0, 0.04) 100%);
+  box-shadow: inset 0 0 0 1px rgba(137, 233, 0, 0.2);
+  transform: scaleX(1.01);
+}
+
+tbody tr:hover td {
+  color: var(--text);
 }
 
 /* Status Badges */
@@ -98,40 +143,88 @@ tbody tr:hover {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  padding: 6px 10px;
+  padding: 8px 12px;
   border-radius: 4px;
   display: inline-block;
+  border: 2px solid;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.1);
+  transition: left 0.4s ease;
+  z-index: -1;
+}
+
+.badge:hover::before {
+  left: 0;
 }
 
 .badge-pendente {
   background: rgba(255, 170, 0, 0.15);
   color: var(--warning);
-  border: 1px solid rgba(255, 170, 0, 0.3);
+  border-color: rgba(255, 170, 0, 0.5);
+}
+
+.badge-pendente:hover {
+  background: rgba(255, 170, 0, 0.25);
+  box-shadow: 0 0 12px rgba(255, 170, 0, 0.2);
 }
 
 .badge-em_preparo {
-  background: var(--green-glow);
+  background: rgba(137, 233, 0, 0.15);
   color: var(--green);
-  border: 1px solid var(--border);
+  border-color: rgba(137, 233, 0, 0.5);
+}
+
+.badge-em_preparo:hover {
+  background: rgba(137, 233, 0, 0.25);
+  box-shadow: 0 0 12px rgba(137, 233, 0, 0.3);
 }
 
 .badge-pronto {
-  background: rgba(137, 233, 0, 0.25);
+  background: rgba(137, 233, 0, 0.2);
   color: #a0ff00;
-  border: 1px solid rgba(137, 233, 0, 0.5);
+  border-color: rgba(137, 233, 0, 0.6);
+}
+
+.badge-pronto:hover {
+  background: rgba(137, 233, 0, 0.3);
+  box-shadow: 0 0 16px rgba(137, 233, 0, 0.4);
+  transform: scale(1.05);
 }
 
 .badge-entregue {
-  background: var(--surface2);
-  color: var(--text-muted);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(100, 200, 100, 0.15);
+  color: #64c864;
+  border-color: rgba(100, 200, 100, 0.4);
+}
+
+.badge-entregue:hover {
+  background: rgba(100, 200, 100, 0.25);
+  box-shadow: 0 0 12px rgba(100, 200, 100, 0.2);
 }
 
 .badge-cancelado {
   background: var(--danger-dim);
   color: var(--danger);
-  border: 1px solid rgba(255, 68, 68, 0.3);
+  border-color: rgba(255, 68, 68, 0.5);
 }
+
+.badge-cancelado:hover {
+  background: rgba(255, 68, 68, 0.25);
+  box-shadow: 0 0 12px rgba(255, 68, 68, 0.2);
+}
+
+.dashboard-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 20px;
@@ -146,13 +239,15 @@ tbody tr:hover {
   border-radius: 8px;
   text-decoration: none;
   color: inherit;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   gap: 16px;
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  animation: fadeInUp 0.6s ease-out calc(0.2s + var(--card-index, 0) * 0.1s) both;
+  transform: translateY(20px);
 }
 
 .dashboard-card::before {
@@ -163,15 +258,15 @@ tbody tr:hover {
   width: 0;
   height: 100%;
   background: rgba(137, 233, 0, 0.05);
-  transition: width 0.3s ease;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   z-index: -1;
 }
 
 .dashboard-card:hover {
   border-color: var(--green);
   border-left: 4px solid var(--green);
-  box-shadow: 0 12px 32px rgba(137, 233, 0, 0.15);
-  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(137, 233, 0, 0.2), 0 0 20px rgba(137, 233, 0, 0.1);
+  transform: translateY(-8px) scale(1.02);
 }
 
 .dashboard-card:hover::before {
@@ -183,6 +278,7 @@ tbody tr:hover {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin: 0;
+  transition: color 0.3s ease;
 }
 
 .dashboard-card p {
@@ -191,10 +287,18 @@ tbody tr:hover {
   color: var(--green);
   font-family: 'Space Mono', monospace;
   margin: 0;
+  transition: all 0.3s ease;
+  animation: countUp 1s ease-out calc(0.5s + var(--card-index, 0) * 0.1s) both;
 }
 
 .dashboard-card:hover h3 {
   color: var(--green);
+  transform: scale(1.05);
+}
+
+.dashboard-card:hover p {
+  transform: scale(1.1);
+  text-shadow: 0 0 12px rgba(137, 233, 0, 0.4);
 }
 
 /* Clientes Page */
@@ -205,10 +309,23 @@ tbody tr:hover {
   gap: 16px;
   margin-bottom: 32px;
   flex-wrap: wrap;
+  animation: slideDown 0.4s ease-out forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .clientes-header h1 {
   margin: 0;
+  animation: slideIn 0.5s ease-out 0.1s both;
 }
 
 .search-container {
@@ -217,24 +334,26 @@ tbody tr:hover {
   flex: 1;
   min-width: 250px;
   max-width: 400px;
+  animation: fadeInUp 0.5s ease-out 0.2s both;
 }
 
 .search-container input {
   flex: 1;
   padding: 12px 16px;
   border-radius: 6px;
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   background: var(--surface);
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
   font-size: 14px;
-  transition: all 0.25s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .search-container input:focus {
   border-color: var(--green);
-  box-shadow: 0 0 0 3px var(--green-glow);
+  box-shadow: 0 0 0 3px rgba(137, 233, 0, 0.15), inset 0 0 8px rgba(137, 233, 0, 0.05);
   outline: none;
+  background: rgba(137, 233, 0, 0.02);
 }
 
 .cliente-item {
@@ -247,33 +366,63 @@ tbody tr:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: all 0.25s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: fadeInUp 0.5s ease-out calc(0.1s + var(--cliente-index, 0) * 0.05s) both;
+  transform: translateY(15px);
+  position: relative;
+  overflow: hidden;
+}
+
+.cliente-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(137, 233, 0, 0.03);
+  transition: width 0.3s ease;
+  z-index: -1;
 }
 
 .cliente-item:hover {
   border-color: var(--green);
-  box-shadow: 0 8px 24px rgba(137, 233, 0, 0.1);
+  box-shadow: 0 12px 32px rgba(137, 233, 0, 0.15), 0 0 16px rgba(137, 233, 0, 0.08);
   background: linear-gradient(135deg, var(--surface2) 0%, rgba(137, 233, 0, 0.02) 100%);
+  transform: translateY(-2px) scale(1.01);
+}
+
+.cliente-item:hover::before {
+  width: 100%;
 }
 
 .cliente-info {
   flex: 1;
+  animation: fadeInLeft 0.4s ease-out calc(0.3s + var(--cliente-index, 0) * 0.05s) both;
 }
 
 .cliente-info p {
   margin: 6px 0;
   font-size: 14px;
+  transition: transform 0.2s ease;
 }
 
 .cliente-info p strong {
   color: var(--green);
   font-family: 'Space Mono', monospace;
+  transition: color 0.3s ease;
+}
+
+.cliente-item:hover .cliente-info p strong {
+  color: var(--green);
+  text-shadow: 0 0 8px rgba(137, 233, 0, 0.3);
 }
 
 .cliente-actions {
   display: flex;
   gap: 8px;
   margin-left: 16px;
+  animation: fadeInRight 0.4s ease-out calc(0.4s + var(--cliente-index, 0) * 0.05s) both;
 }
 
 /* Pedidos Page */

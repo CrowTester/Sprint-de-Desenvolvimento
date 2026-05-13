@@ -15,15 +15,23 @@ function validarEmail(email) {
 }
 
 function ClienteModal({ cliente, onSave, onClose }) {
-  const [form, setForm] = useState(EMPTY_FORM);
+  const [form, setForm] = useState(cliente ? { nome: cliente.nome || "", email: cliente.email || "", telefone: cliente.telefone || "" } : EMPTY_FORM);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
   const isEditing = !!cliente?.id;
 
-  // FIX: sincroniza quando cliente muda
+  // Sincroniza quando cliente muda
   useEffect(() => {
-    setForm(cliente || EMPTY_FORM);
+    if (cliente && cliente.id) {
+      setForm({
+        nome: cliente.nome || "",
+        email: cliente.email || "",
+        telefone: cliente.telefone || ""
+      });
+    } else {
+      setForm({ ...EMPTY_FORM });
+    }
   }, [cliente]);
 
   function validate() {
@@ -199,8 +207,12 @@ export default function ClientesPage() {
         </div>
       ) : (
         <div className="items-container">
-          {filtrados.map((c) => (
-            <div key={c.id} className="cliente-item">
+          {filtrados.map((c, index) => (
+            <div
+              key={c.id}
+              className="cliente-item"
+              style={{ '--cliente-index': index }}
+            >
               <div className="cliente-info">
                 <p><strong>Nome:</strong> {c.nome}</p>
                 <p><strong>Email:</strong> {c.email}</p>
