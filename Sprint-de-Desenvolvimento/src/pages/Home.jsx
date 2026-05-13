@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getClientes, getPedidos } from "../services/Api.js";
+import "../Pages.css";
 
 export default function Home() {
   const [stats, setStats] = useState({
@@ -74,35 +75,24 @@ export default function Home() {
   ];
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>Dashboard</h1>
+    <div>
+      <h1>📊 Dashboard</h1>
 
       {error && (
-        <div style={{
-          padding: "12px",
-          marginBottom: "16px",
-          backgroundColor: "#fee",
-          border: "1px solid #fcc",
-          borderRadius: "4px",
-          color: "#c33",
-        }}>
-          ⚠️ {error}
+        <div className="error-message">
+          {error}
         </div>
       )}
 
       {loading ? (
-        <p>Carregando...</p>
+        <div className="loading-state">Carregando...</div>
       ) : (
-        <div style={{ display: "grid", gap: "12px" }}>
+        <div className="dashboard-grid">
           {cards.map((card, i) => (
             <Link
               key={i}
               to={card.link}
-              style={{
-                padding: "16px",
-                border: "1px solid #ccc",
-                textDecoration: "none",
-              }}
+              className="dashboard-card"
             >
               <h3>{card.label}</h3>
               <p>{card.value}</p>

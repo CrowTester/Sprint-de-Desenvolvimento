@@ -1,113 +1,134 @@
 .layout {
   display: flex;
   min-height: 100vh;
+  background: var(--black);
 }
 
 .sidebar {
-  width: 240px;
-  min-width: 240px;
-  background: #1a1a1a;
-  border-right: 1px solid var(--border);
+  width: 260px;
+  min-width: 260px;
+  background: linear-gradient(180deg, var(--surface) 0%, var(--black) 100%);
+  border-right: 2px solid var(--green);
   display: flex;
   flex-direction: column;
   position: sticky;
   top: 0;
   height: 100vh;
   overflow: hidden;
+  box-shadow: 2px 0 15px rgba(137, 233, 0, 0.1);
 }
 
 .sidebar-brand {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 28px 20px;
+  padding: 32px 24px;
   border-bottom: 1px solid var(--border);
+  background: rgba(137, 233, 0, 0.05);
 }
 
 .brand-icon {
-  font-size: 28px;
-  filter: grayscale(0);
+  font-size: 32px;
+  filter: grayscale(0) drop-shadow(0 0 8px rgba(137, 233, 0, 0.3));
 }
 
 .brand-name {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 24px;
-  letter-spacing: 0.1em;
+  font-size: 26px;
+  letter-spacing: 0.15em;
   color: var(--green);
   line-height: 1;
+  text-shadow: 0 0 10px rgba(137, 233, 0, 0.2);
 }
 
 .brand-tag {
   font-family: 'Space Mono', monospace;
   font-size: 10px;
   color: var(--text-muted);
-  margin-top: 2px;
+  margin-top: 4px;
+  letter-spacing: 0.05em;
 }
 
 .sidebar-nav {
   flex: 1;
-  padding: 24px 0;
+  padding: 28px 0;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
 
 .nav-section-label {
   font-family: 'Space Mono', monospace;
-  font-size: 9px;
+  font-size: 10px;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.25em;
   color: var(--text-muted);
-  padding: 0 20px 12px;
+  padding: 0 24px 16px;
+  font-weight: 700;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 20px;
+  gap: 14px;
+  padding: 14px 24px;
   color: var(--text-muted);
   text-decoration: none;
   font-family: 'Space Mono', monospace;
   font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  transition: all 0.2s;
+  letter-spacing: 0.1em;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  border-left: 2px solid transparent;
+  border-left: 3px solid transparent;
+  margin: 0 8px;
+  border-radius: 0 6px 6px 0;
 }
 
 .nav-item:hover {
-  color: var(--text);
-  background: var(--green-glow);
+  color: var(--green);
+  background: rgba(137, 233, 0, 0.08);
+  transform: translateX(4px);
 }
 
 .nav-item.active {
   color: var(--green);
-  background: var(--green-glow);
+  background: rgba(137, 233, 0, 0.12);
   border-left-color: var(--green);
+  box-shadow: inset -2px 0 8px rgba(137, 233, 0, 0.1);
+  font-weight: 700;
 }
 
 .nav-icon {
-  font-size: 14px;
-  opacity: 0.7;
+  font-size: 16px;
+  opacity: 0.8;
+  transition: all 0.25s ease;
+}
+
+.nav-item:hover .nav-icon {
+  opacity: 1;
+  transform: scale(1.1);
 }
 
 .nav-item.active .nav-icon {
   opacity: 1;
+  text-shadow: 0 0 8px rgba(137, 233, 0, 0.4);
 }
 
 .sidebar-footer {
-  padding: 20px;
+  padding: 20px 24px;
   border-top: 1px solid var(--border);
+  background: rgba(137, 233, 0, 0.03);
 }
-
 .status-indicator {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-family: 'Space Mono', monospace;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .status-dot {
@@ -117,19 +138,87 @@
   background: var(--green);
   animation: pulse-green 2s infinite;
   flex-shrink: 0;
+  box-shadow: 0 0 8px rgba(137, 233, 0, 0.6);
 }
 
 .main-content {
   flex: 1;
   overflow-y: auto;
   min-width: 0;
+  background: linear-gradient(135deg, var(--black) 0%, var(--surface) 100%);
 }
 
 .content-inner {
-  padding: 40px;
-  max-width: 1100px;
+  padding: 48px;
+  max-width: 1200px;
   animation: fadeInUp 0.4s ease;
+  min-height: 100%;
 }
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeInUp 0.2s ease;
+}
+
+.modal {
+  background: var(--surface2);
+  border: 2px solid var(--green);
+  border-radius: 8px;
+  padding: 32px;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(137, 233, 0, 0.15);
+  animation: fadeInUp 0.3s ease;
+}
+
+.modal h3, .modal-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  color: var(--green);
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.modal input, .modal select {
+  margin-bottom: 14px;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+}
+
+.modal button {
+  margin-top: 16px;
+  margin-right: 8px;
+}
+
+/* Card Styles */
+.card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--green);
+  border-radius: 6px;
+  padding: 24px;
+  margin-bottom: 16px;
+  transition: all 0.25s ease;
+}
+
+.card:hover {
+  border-color: var(--green);
+  box-shadow: 0 8px 20px rgba(137, 233, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Gap utilities */
+.gap-16 { display: flex; flex-direction: column; gap: 16px; }
+.gap-12 { display: flex; flex-direction: column; gap: 12px; }
 
 @media (max-width: 768px) {
   .layout { flex-direction: column; }
@@ -137,6 +226,13 @@
     width: 100%;
     height: auto;
     position: relative;
+    border-right: none;
+    border-bottom: 2px solid var(--green);
   }
-  .content-inner { padding: 20px; }
+  .sidebar-nav { flex-direction: row; padding: 16px 0; overflow-x: auto; }
+  .nav-section-label { display: none; }
+  .nav-item { margin: 0 8px; }
+  .sidebar-footer { display: none; }
+  .content-inner { padding: 24px; }
+  .modal { max-width: 95%; }
 }

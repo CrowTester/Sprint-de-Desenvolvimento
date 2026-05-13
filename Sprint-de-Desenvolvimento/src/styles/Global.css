@@ -62,22 +62,138 @@ h1, h2, h3 {
 
 /* Animations */
 @keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes pulse-green {
-  0%, 100% { box-shadow: 0 0 0 0 var(--green-glow-strong); }
-  50% { box-shadow: 0 0 0 8px transparent; }
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(137, 233, 0, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 0 12px rgba(137, 233, 0, 0);
+    transform: scale(1.05);
+  }
 }
 
 @keyframes scanline {
-  0% { transform: translateY(-100%); }
-  100% { transform: translateY(100vh); }
+  0% {
+    transform: translateY(-100%);
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh);
+    opacity: 0.8;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 5px rgba(137, 233, 0, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(137, 233, 0, 0.6), 0 0 30px rgba(137, 233, 0, 0.4);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
 }
 
 .animate-in {
-  animation: fadeInUp 0.4s ease forwards;
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-in-left {
+  animation: fadeInLeft 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-in-right {
+  animation: fadeInRight 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-bounce {
+  animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.4s ease-out forwards;
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(137, 233, 0, 0.1), transparent);
+  background-size: 200px 100%;
+  animation: shimmer 2s infinite;
 }
 
 /* Buttons */
@@ -262,23 +378,26 @@ tbody tr:hover {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.85);
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
   animation: fadeInUp 0.2s ease;
+  padding: 16px;
 }
 
 .modal {
-  background: var(--black);
-  border: 1px solid var(--green);
+  background: linear-gradient(135deg, var(--surface2) 0%, var(--black) 100%);
+  border: 2px solid var(--green);
   padding: 32px;
   width: 100%;
-  max-width: 520px;
+  max-width: 540px;
   position: relative;
-  box-shadow: 0 0 60px var(--green-glow-strong);
+  box-shadow: 0 0 60px rgba(137, 233, 0, 0.2), 0 20px 60px rgba(0, 0, 0, 0.8);
+  border-radius: 8px;
+  animation: fadeInUp 0.3s ease;
 }
 
 .modal-header {
@@ -294,21 +413,36 @@ tbody tr:hover {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 28px;
   color: var(--green);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(137, 233, 0, 0.2);
 }
 
 .modal-close {
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 24px;
+  font-size: 28px;
   cursor: pointer;
   line-height: 1;
-  transition: color 0.2s;
+  transition: all 0.2s ease;
   font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  hover-color: var(--danger);
 }
 
-.modal-close:hover { color: var(--danger); }
+.modal-close:hover {
+  background: rgba(255, 68, 68, 0.1);
+  color: var(--danger);
+  transform: rotate(90deg);
+}
 
 /* Page header */
 .page-header {

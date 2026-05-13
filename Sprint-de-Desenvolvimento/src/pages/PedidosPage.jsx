@@ -4,6 +4,7 @@ import {
     updatePedidoStatus, deletePedido
 } from '../services/Api.js'
 import Toast from '../components/Toast.jsx'
+import '../Pages.css'
 
 const STATUS_LIST = ['pendente', 'em_preparo', 'pronto', 'entregue', 'cancelado']
 

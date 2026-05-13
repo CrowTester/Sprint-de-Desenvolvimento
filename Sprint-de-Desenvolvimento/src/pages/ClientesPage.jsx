@@ -6,6 +6,7 @@ import {
   deleteCliente,
 } from "../services/Api.js";
 import Toast from "../components/Toast.jsx";
+import "../Pages.css";
 
 const EMPTY_FORM = { nome: "", email: "", telefone: "" };
 
@@ -58,40 +59,59 @@ function ClienteModal({ cliente, onSave, onClose }) {
   return (
     <div className="modal-overlay">
       <div className="modal">
-        <h3>{isEditing ? "Editar Cliente" : "Novo Cliente"}</h3>
+        <div className="modal-header">
+          <span className="modal-title">{isEditing ? "Editar Cliente" : "Novo Cliente"}</span>
+          <button className="modal-close" onClick={onClose}>×</button>
+        </div>
 
-        <input
-          placeholder="Nome"
-          value={form.nome}
-          onChange={(e) =>
-            setForm({ ...form, nome: e.target.value })
-          }
-        />
-        {errors.nome && <p>{errors.nome}</p>}
+        <div className="gap-16">
+          <div className="form-group">
+            <label className="form-label">Nome *</label>
+            <input
+              className="input"
+              placeholder="Nome do cliente"
+              value={form.nome}
+              onChange={(e) =>
+                setForm({ ...form, nome: e.target.value })
+              }
+            />
+            {errors.nome && <span style={{ color: "var(--danger)", fontSize: "12px", fontFamily: "Space Mono" }}>✕ {errors.nome}</span>}
+          </div>
 
-        <input
-          placeholder="Email"
-          value={form.email}
-          onChange={(e) =>
-            setForm({ ...form, email: e.target.value })
-          }
-        />
-        {errors.email && <p>{errors.email}</p>}
+          <div className="form-group">
+            <label className="form-label">Email *</label>
+            <input
+              className="input"
+              placeholder="email@example.com"
+              value={form.email}
+              onChange={(e) =>
+                setForm({ ...form, email: e.target.value })
+              }
+            />
+            {errors.email && <span style={{ color: "var(--danger)", fontSize: "12px", fontFamily: "Space Mono" }}>✕ {errors.email}</span>}
+          </div>
 
-        <input
-          placeholder="Telefone"
-          value={form.telefone}
-          onChange={(e) =>
-            setForm({ ...form, telefone: e.target.value })
-          }
-        />
+          <div className="form-group">
+            <label className="form-label">Telefone</label>
+            <input
+              className="input"
+              placeholder="(11) 99999-9999"
+              value={form.telefone}
+              onChange={(e) =>
+                setForm({ ...form, telefone: e.target.value })
+              }
+            />
+          </div>
 
-        {errors.api && <p>{errors.api}</p>}
+          {errors.api && <div className="error-message">{errors.api}</div>}
 
-        <button onClick={onClose}>Cancelar</button>
-        <button onClick={handleSubmit} disabled={loading}>
-          {loading ? "Salvando..." : "Salvar"}
-        </button>
+          <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end", marginTop: "8px" }}>
+            <button className="btn btn-secondary" onClick={onClose}>Cancelar</button>
+            <button className="btn btn-primary" onClick={handleSubmit} disabled={loading}>
+              {loading ? "Salvando..." : "Salvar"}
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -154,35 +174,49 @@ export default function ClientesPage() {
 
   return (
     <div>
-      <h1>Clientes</h1>
+      <div className="clientes-header">
+        <h1>👥 Clientes</h1>
+        <button className="btn btn-primary" onClick={() => setModal("new")}>
+          ➕ Novo Cliente
+        </button>
+      </div>
 
-      <button onClick={() => setModal("new")}>
-        Novo Cliente
-      </button>
-
-      <input
-        placeholder="Buscar..."
-        value={busca}
-        onChange={(e) => setBusca(e.target.value)}
-      />
+      <div className="search-container">
+        <input
+          className="input"
+          placeholder="🔍 Buscar por nome ou email..."
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+        />
+      </div>
 
       {loading ? (
-        <p>Carregando...</p>
+        <div className="loading-state">Carregando clientes...</div>
+      ) : filtrados.length === 0 ? (
+        <div className="empty-state">
+          <div className="empty-state-icon">📭</div>
+          <p>Nenhum cliente encontrado</p>
+        </div>
       ) : (
-        filtrados.map((c) => (
-          <div key={c.id}>
-            <p>{c.nome}</p>
-            <p>{c.email}</p>
-
-            <button onClick={() => setModal(c)}>
-              Editar
-            </button>
-
-            <button onClick={() => setConfirmDelete(c)}>
-              Remover
-            </button>
-          </div>
-        ))
+        <div className="items-container">
+          {filtrados.map((c) => (
+            <div key={c.id} className="cliente-item">
+              <div className="cliente-info">
+                <p><strong>Nome:</strong> {c.nome}</p>
+                <p><strong>Email:</strong> {c.email}</p>
+                {c.telefone && <p><strong>Telefone:</strong> {c.telefone}</p>}
+              </div>
+              <div className="cliente-actions">
+                <button className="btn btn-secondary btn-sm" onClick={() => setModal(c)}>
+                  Editar
+                </button>
+                <button className="btn btn-danger btn-sm" onClick={() => setConfirmDelete(c)}>
+                  Remover
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       )}
 
       {modal && (
@@ -194,16 +228,27 @@ export default function ClientesPage() {
       )}
 
       {confirmDelete && (
-        <div>
-          <p>Confirmar exclusão?</p>
-          <button onClick={() => setConfirmDelete(null)}>
-            Cancelar
-          </button>
-          <button
-            onClick={() => handleDelete(confirmDelete.id)}
-          >
-            Remover
-          </button>
+        <div className="modal-overlay">
+          <div className="modal" style={{ maxWidth: "400px" }}>
+            <div className="modal-header">
+              <span className="modal-title">⚠️ Confirmar Exclusão</span>
+              <button className="modal-close" onClick={() => setConfirmDelete(null)}>×</button>
+            </div>
+            <p style={{ marginBottom: "20px", color: "var(--text-muted)" }}>
+              Tem certeza que deseja remover o cliente <strong>{confirmDelete.nome}</strong>?
+            </p>
+            <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end" }}>
+              <button className="btn btn-secondary" onClick={() => setConfirmDelete(null)}>
+                Cancelar
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={() => handleDelete(confirmDelete.id)}
+              >
+                Remover
+              </button>
+            </div>
+          </div>
         </div>
       )}
 
